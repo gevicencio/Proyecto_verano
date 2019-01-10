@@ -5,6 +5,7 @@ import sys
 import time
 import numpy as np
 import tkinter as tk
+from tkinter import ttk
 if sys.version_info[0] < 3:
     from StringIO import StringIO
 else:
@@ -19,6 +20,7 @@ else:
 #df2 = pd.read_csv("M.O Temporal.csv")
 actualiza = int(input("quieres actualizar los datos? 1 = Si; 0 = No "))
 if actualiza == 1:
+
     #ahora = datetime.datetime.now()
     f    = open("M.O Temporal.csv","rb")
     text = f.read().decode(errors='ignore')
@@ -30,6 +32,7 @@ if actualiza == 1:
     text4 = f4.read().decode(errors='ignore')
     f5   = open("M.O  Permanente.csv","rb")
     text5 = f5.read().decode(errors='ignore')
+
 
 
     TESTDATA = StringIO(text)
@@ -52,9 +55,11 @@ if actualiza == 1:
     df3.dropna(subset=["Fecha"],inplace=True)
     df3.dropna(subset=["  Total  "],inplace=True)
     df4.dropna(subset=["Fecha "],inplace=True)
-    df4.dropna(subset=[" Total "],inplace=True)
+    df4.dropna(subset=[" Neto "],inplace=True)
     df5.dropna(subset=[" Fecha "],inplace=True)
     df5.dropna(subset=[" Costo Empresa "],inplace=True)
+
+
 
     #despues = datetime.datetime.now()
     #despues = datetime.datetime.now()
@@ -72,25 +77,41 @@ if actualiza == 1:
             try:
                 a = datetime.datetime.strptime(row[0][3:], '%m-%y')
                 b = a.strftime('%y-%m')
-                j = str(row[12]).replace(".","").strip(" ")
-                if j != "":
-                    if j[0]=="-" or j[0]== "$":
-                        if len(j[1:])==0:
-                            j = 0
-                        else:
-                            j = int(j[1:])*-1
-                    elif "," in j:
-                        j = int(j[:j.find(",")])
-                    else:
-                        if j == "nan":
-                            j = 0
-                        else:
-                            try:
-                                j = int(j)
-                            except ValueError:
-                                j = 0
             except AttributeError:
                 errores+=1
+            j = str(row[12]).replace(".","").strip(" ")
+            if j == "nan" or j == "":
+                j=0
+            else:
+                if "," in j:
+                    j = str(j[:j.find(",")])
+                if j[0]=="-":
+                    if len(j[1:])>0:
+                        if j[1]== "$":
+                            if len(j[2:])==0:
+                                j=0
+                            else:
+                                j = int(j[2:])*-1
+                        else:
+                            j = int(j[1:])*-1
+                    else:
+                        j=0
+                elif j[0]=="$":
+                    if len(j[1:])>0:
+                        if j[1] != "-":
+                            if len(j[1:])!=0:
+                                j = int(j[1:])
+                            else:
+                                j=0
+                        else:
+                            if len(j[2:])!=0:
+                                j = int(j[2:])*-1
+                            else:
+                                j=0
+                    else:
+                        j=0
+
+
             try:
                 row[5]=row[5].upper()
                 row[5]=row[5].strip(" ")
@@ -130,21 +151,36 @@ if actualiza == 1:
             a = datetime.datetime.strptime(row[2][3:], '%m-%y')
             b = a.strftime('%y-%m')
             j = str(row[20]).replace(".","").strip(" ")
-            if j[0]=="-" or j[0]== "$":
-                if len(j[1:])==0:
-                    j = 0
-                else:
-                    j = int(j[1:])*-1
-            elif "," in j:
-                j = int(j[:j.find(",")])
+            if j == "nan" or j == "":
+                j=0
             else:
-                if j == "nan":
-                    j = 0
-                else:
-                    try:
-                        j = int(j)
-                    except ValueError:
-                        j = 0
+                if "," in j:
+                    j = str(j[:j.find(",")])
+                if j[0]=="-":
+                    if len(j[1:])>0:
+                        if j[1]== "$":
+                            if len(j[2:])==0:
+                                j=0
+                            else:
+                                j = int(j[2:])*-1
+                        else:
+                            j = int(j[1:])*-1
+                    else:
+                        j=0
+                elif j[0]=="$":
+                    if len(j[1:])>0:
+                        if j[1] != "-":
+                            if len(j[1:])!=0:
+                                j = int(j[1:])
+                            else:
+                                j=0
+                        else:
+                            if len(j[2:])!=0:
+                                j = int(j[2:])*-1
+                            else:
+                                j=0
+                    else:
+                        j=0
             try:
                 row[5]=row[5].upper()
                 row[5]=row[5].strip(" ")
@@ -182,21 +218,36 @@ if actualiza == 1:
             a = datetime.datetime.strptime(row[9][3:], '%m-%y')
             b = a.strftime('%y-%m')
             j = str(row[18]).replace(".","").strip(" ")
-            if j[0]=="-" or j[0]== "$":
-                if len(j[1:])==0:
-                    j = 0
-                else:
-                    j = int(j[1:])*-1
-            elif "," in j:
-                j = int(j[:j.find(",")])
+            if j == "nan" or j == "":
+                j=0
             else:
-                if j == "nan":
-                    j = 0
-                else:
-                    try:
-                        j = int(j)
-                    except ValueError:
-                        j = 0
+                if "," in j:
+                    j = str(j[:j.find(",")])
+                if j[0]=="-":
+                    if len(j[1:])>0:
+                        if j[1]== "$":
+                            if len(j[2:])==0:
+                                j=0
+                            else:
+                                j = int(j[2:])*-1
+                        else:
+                            j = int(j[1:])*-1
+                    else:
+                        j=0
+                elif j[0]=="$":
+                    if len(j[1:])>0:
+                        if j[1] != "-":
+                            if len(j[1:])!=0:
+                                j = int(j[1:])
+                            else:
+                                j=0
+                        else:
+                            if len(j[2:])!=0:
+                                j = int(j[2:])*-1
+                            else:
+                                j=0
+                    else:
+                        j=0
             try:
                 row[2]=row[2].upper()
                 row[2]=row[2].strip(" ")
@@ -227,31 +278,50 @@ if actualiza == 1:
         cursor.execute("DROP TABLE IF EXISTS temporal")
         cursor.execute("CREATE TABLE IF NOT EXISTS temporal(id INTEGER,fecha DATE,valor INTEGER,Clasificacion_labor VARCHAR(30),lugar VARCHAR(30),clasif_cultivo VARCHAR(30),cod VARCHAR(30),empresa VARCHAR(30),CONSTRAINT Keytemporal PRIMARY KEY(id))")
         datos = []
+
         ID = 0
         forma = 0
         errores = 0
+        negativo = False
         for index, row in df.iterrows():
             a = datetime.datetime.strptime(row[0][3:], '%m-%y')
             b = a.strftime('%y-%m')
             j = str(row[5]).replace(".","").strip(" ")
-            if j[0]=="-" or j[0]== "$":
-                if len(j[1:])==0:
-                    j = 0
-                else:
-                    j = int(j[1:])*-1
-            elif "," in j:
-                j = int(j[:j.find(",")])
+            if j == "nan" or j == "":
+                j=0
             else:
-                if j == "nan":
-                    j = 0
-                else:
-                    try:
-                        j = int(j)
-                    except ValueError:
-                        j = 0
+                if "," in j:
+                    j = str(j[:j.find(",")])
+                if j[0]=="-":
+                    if len(j[1:])>0:
+                        if j[1]== "$":
+                            if len(j[2:])==0:
+                                j=0
+                            else:
+                                j = int(j[2:])*-1
+                        else:
+                            j = int(j[1:])*-1
+                    else:
+                        j=0
+                elif j[0]=="$":
+                    if len(j[1:])>0:
+                        if j[1] != "-":
+                            if len(j[1:])!=0:
+                                j = int(j[1:])
+                            else:
+                                j=0
+                        else:
+                            if len(j[2:])!=0:
+                                j = int(j[2:])*-1
+                            else:
+                                j=0
+                    else:
+                        j=0
+
             try:
                 row[7]=row[7].strip(" ")
                 row[7]=row[7].upper()
+
             except AttributeError:
                 errores+=1
             try:
@@ -263,10 +333,11 @@ if actualiza == 1:
             except AttributeError:
                 errores+=1
             try:
+                row[13]=row[13].strip(" ")
                 row[13]=row[13].upper()
             except AttributeError:
                 errores+=1
-            datos.append((index,b,j,row[7].strip(),row[8],row[11],row[12],row[13].strip(" ")))
+            datos.append((index,b,j,row[7],row[8],row[11],row[12],row[13]))
 
         cursor.executemany("INSERT INTO temporal VALUES(?,?,?,?,?,?,?,?)", datos)
         connection.commit()
@@ -284,25 +355,36 @@ if actualiza == 1:
             a = datetime.datetime.strptime(row[0][3:], '%m-%y')
             b = a.strftime('%y-%m')
             j = str(row[22]).replace(".","").strip(" ")
-            if j[0]=="-" or j[0]== "$":
-                if len(j[1:])==0:
-
-                    j = 0
-                else:
-                    j = int(j[1:])*-1
-            elif "," in j:
-                j = int(j[:j.find(",")])
+            if j == "nan" or j == "":
+                j=0
             else:
-                if j == "nan":
-
-                    j = 0
-                else:
-                    try:
-                        j = int(j)
-
-                    except ValueError:
-
-                        j = 0
+                if "," in j:
+                    j = str(j[:j.find(",")])
+                if j[0]=="-":
+                    if len(j[1:])>0:
+                        if j[1]== "$":
+                            if len(j[2:])==0:
+                                j=0
+                            else:
+                                j = int(j[2:])*-1
+                        else:
+                            j = int(j[1:])*-1
+                    else:
+                        j=0
+                elif j[0]=="$":
+                    if len(j[1:])>0:
+                        if j[1] != "-":
+                            if len(j[1:])!=0:
+                                j = int(j[1:])
+                            else:
+                                j=0
+                        else:
+                            if len(j[2:])!=0:
+                                j = int(j[2:])*-1
+                            else:
+                                j=0
+                    else:
+                        j=0
             try:
                 row[2]=row[2].strip(" ")
                 row[2]=row[2].upper()
@@ -313,44 +395,413 @@ if actualiza == 1:
         cursor.executemany("INSERT INTO permanente VALUES(?,?,?,?)", datos)
         connection.commit()
         connection.close()
+    ahora2 = datetime.datetime.now()
     crear_tabla_permanente(df5)
     crear_tabla_temporal(df)
     crear_tabla_bodega(df2)
     crear_tabla_maquinas(df3)
     crear_tabla_gastos(df4)
+    despues2 = datetime.datetime.now()
+    print(despues2-ahora2)
 
-##rellena datos faltantes
-def actualizar_tabla_temporal(df):
-    connection = sqlite3.connect('temporal.db')
-    cursor = connection.cursor()
-    cursor.execute("select count(*) from {}".format(nombre))
-    values = cursor.fetchone()
+elif actualiza ==2:
+    f    = open("M.O Temporal.csv","rb")
+    text = f.read().decode(errors='ignore')
+    f2    = open("bodegas.csv","rb")
+    text2 = f2.read().decode(errors='ignore')
+    f3   = open("Arriendo Maq.csv","rb")
+    text3 = f3.read().decode(errors='ignore')
+    f4   = open("Gastos.csv","rb")
+    text4 = f4.read().decode(errors='ignore')
+    f5   = open("M.O  Permanente.csv","rb")
+    text5 = f5.read().decode(errors='ignore')
 
-    if len(df.loc[values[0]:])!=0:
-        datos = []
-        for index, row in df.loc[values[0]:, :].iterrows():
-            a = datetime.datetime.strptime(row[0], '%d-%m-%y')
-            b = a.strftime('%y/%m/%d')
-            j = str(row[5]).replace(".","").strip(" ")
-            if j[0]=="-" or j[0]== "$":
-                if len(j[1:])==0:
-                    j = 0
+    TESTDATA = StringIO(text)
+    TESTDATA2 = StringIO(text2)
+    TESTDATA3 = StringIO(text3)
+    TESTDATA4 = StringIO(text4)
+    TESTDATA5 = StringIO(text5)
+
+    df = pd.read_csv(TESTDATA, sep=";")
+    df2 = pd.read_csv(TESTDATA2, sep=";")
+    df3 = pd.read_csv(TESTDATA3, sep=";")
+    df4 = pd.read_csv(TESTDATA4, sep=";")
+    df5 = pd.read_csv(TESTDATA5, sep=";")
+
+    #REVISAR LAS KEYS QUE TIENEN ESPACIO ALGUNAS
+    df.dropna(subset=[' Fecha'], inplace=True)
+    df.dropna(subset=[" Valor "],inplace=True)
+    df2.dropna(subset=["Fechas Salida"],inplace=True)
+    df2.dropna(subset=[" $ salida "],inplace=True)
+    df3.dropna(subset=["Fecha"],inplace=True)
+    df3.dropna(subset=["  Total  "],inplace=True)
+    df4.dropna(subset=["Fecha "],inplace=True)
+    df4.dropna(subset=[" Neto "],inplace=True)
+    df5.dropna(subset=[" Fecha "],inplace=True)
+    df5.dropna(subset=[" Costo Empresa "],inplace=True)
+    ##rellena datos faltantes
+    def actualizar_tabla_temporal(df):
+        connection = sqlite3.connect('temporal.db')
+        cursor = connection.cursor()
+        cursor.execute("select count(*) from temporal")
+        values = cursor.fetchone()
+        errores = 0
+
+
+        if values[0]<len(df):
+            datos = []
+            indice = values[0]+1
+            for index, row in df[values[0]:].iterrows():
+
+
+
+                a = datetime.datetime.strptime(row[0][3:], '%m-%y')
+                b = a.strftime('%y-%m')
+                j = str(row[5]).replace(".","").strip(" ")
+                if j == "nan" or j == "":
+                    j=0
                 else:
-                    j = int(j[1:])*-1
-            elif "," in j:
-                j = int(j[:j.find(",")])
-            else:
+                    if "," in j:
+                        j = str(j[:j.find(",")])
+                    if j[0]=="-":
+                        if len(j[1:])>0:
+                            if j[1]== "$":
+                                if len(j[2:])==0:
+                                    j=0
+                                else:
+                                    j = int(j[2:])*-1
+                            else:
+                                j = int(j[1:])*-1
+                        else:
+                            j=0
+                    elif j[0]=="$":
+                        if len(j[1:])>0:
+                            if j[1] != "-":
+                                if len(j[1:])!=0:
+                                    j = int(j[1:])
+                                else:
+                                    j=0
+                            else:
+                                if len(j[2:])!=0:
+                                    j = int(j[2:])*-1
+                                else:
+                                    j=0
+                        else:
+                            j=0
                 try:
-                    j = int(j)
-                except ValueError:
-                    j = 0
+                    row[7]=row[7].strip(" ")
+                    row[7]=row[7].strip()
+                    row[7]=row[7].upper()
+                except AttributeError:
+                    errores+=1
+                try:
+                    row[8]=row[8].upper()
+                except AttributeError:
+                    errores+=1
+                try:
+                    row[11]=row[11].upper()
+                except AttributeError:
+                    errores+=1
+                try:
+                    row[13]=row[13].upper()
+                    row[13]=row[13].strip(" ")
+                except AttributeError:
+                    errores+=1
+                datos.append((indice,b,j,row[7],row[8],row[11],row[12],row[13]))
+                indice +=1
 
-            datos.append((index,b,j,row[7].strip(),row[8],row[11],row[12],row[13].strip(" ")))
-        cursor.executemany("INSERT INTO temporal VALUES(?,?,?,?,?,?,?,?)", datos)
+            cursor.executemany("INSERT INTO temporal VALUES(?,?,?,?,?,?,?,?)", datos)
+            connection.commit()
+            connection.close()
 
-    connection.commit()
-    connection.close()
-    return None
+
+    def actualizar_tabla_permanente(df5):
+        connection = sqlite3.connect('permanente.db')
+        cursor = connection.cursor()
+        cursor.execute("select count(*) from permanente")
+        values = cursor.fetchone()
+        errores = 0
+
+
+        if values[0]<len(df5):
+            datos = []
+            indice = values[0]+1
+            for index, row in df5[values[0]:].iterrows():
+
+
+                a = datetime.datetime.strptime(row[0][3:], '%m-%y')
+                b = a.strftime('%y-%m')
+                j = str(row[22]).replace(".","").strip(" ")
+                if j == "nan" or j == "":
+                    j=0
+                else:
+                    if "," in j:
+                        j = str(j[:j.find(",")])
+                    if j[0]=="-":
+                        if len(j[1:])>0:
+                            if j[1]== "$":
+                                if len(j[2:])==0:
+                                    j=0
+                                else:
+                                    j = int(j[2:])*-1
+                            else:
+                                j = int(j[1:])*-1
+                        else:
+                            j=0
+                    elif j[0]=="$":
+                        if len(j[1:])>0:
+                            if j[1] != "-":
+                                if len(j[1:])!=0:
+                                    j = int(j[1:])
+                                else:
+                                    j=0
+                            else:
+                                if len(j[2:])!=0:
+                                    j = int(j[2:])*-1
+                                else:
+                                    j=0
+                        else:
+                            j=0
+                try:
+                    row[2]=row[2].strip(" ")
+                    row[2]=row[2].upper()
+                except AttributeError:
+                    errores+=1
+                datos.append((index,b,j,row[2]))
+                indice+=1
+
+            cursor.executemany("INSERT INTO permanente VALUES(?,?,?,?)", datos)
+            connection.commit()
+            connection.close()
+
+    def actualizar_tabla_bodega(df2):
+        connection = sqlite3.connect('bodega.db')
+        cursor = connection.cursor()
+        cursor.execute("select count(*) from bodega")
+        values = cursor.fetchone()
+        errores = 0
+
+
+        #print(df2.loc[values[0]+1:])
+        if values[0]<len(df2):
+            indice = values[0]+1
+            datos = []
+            for index, row in df2[values[0]:].iterrows():
+
+
+
+                a = datetime.datetime.strptime(row[9][3:], '%m-%y')
+                b = a.strftime('%y-%m')
+                j = str(row[18]).replace(".","").strip(" ")
+                if j == "nan" or j == "":
+                    j=0
+                else:
+                    if "," in j:
+                        j = str(j[:j.find(",")])
+                    if j[0]=="-":
+                        if len(j[1:])>0:
+                            if j[1]== "$":
+                                if len(j[2:])==0:
+                                    j=0
+                                else:
+                                    j = int(j[2:])*-1
+                            else:
+                                j = int(j[1:])*-1
+                        else:
+                            j=0
+                    elif j[0]=="$":
+                        if len(j[1:])>0:
+                            if j[1] != "-":
+                                if len(j[1:])!=0:
+                                    j = int(j[1:])
+                                else:
+                                    j=0
+                            else:
+                                if len(j[2:])!=0:
+                                    j = int(j[2:])*-1
+                                else:
+                                    j=0
+                        else:
+                            j=0
+                try:
+                    row[2]=row[2].upper()
+                    row[2]=row[2].strip(" ")
+                except AttributeError:
+                    errores+=1
+                try:
+                    row[13]=row[13].upper()
+                except AttributeError:
+                    errores+=1
+                try:
+                    row[12]=row[12].upper()
+                except AttributeError:
+                    errores+=1
+                try:
+                    row[14]=row[14].upper()
+                except AttributeError:
+                    errores+=1
+
+                datos.append((index,b,j,row[2],row[13],row[12],row[14]))
+                indice+=1
+
+            cursor.executemany("INSERT INTO bodega VALUES(?,?,?,?,?,?,?)", datos)
+            connection.commit()
+            connection.close()
+
+    def actualizar_tabla_maquinas(df3):
+        connection = sqlite3.connect('maquinas.db')
+        cursor = connection.cursor()
+        cursor.execute("select count(*) from maquinas")
+        values = cursor.fetchone()
+
+
+        if values[0]<len(df3):
+            datos = []
+            indice = values[0]+1
+            for index, row in df3[values[0]:].iterrows():
+
+
+                a = datetime.datetime.strptime(row[2][3:], '%m-%y')
+                b = a.strftime('%y-%m')
+                j = str(row[20]).replace(".","").strip(" ")
+                if j == "nan" or j == "":
+                    j=0
+                else:
+                    if "," in j:
+                        j = str(j[:j.find(",")])
+                    if j[0]=="-":
+                        if len(j[1:])>0:
+                            if j[1]== "$":
+                                if len(j[2:])==0:
+                                    j=0
+                                else:
+                                    j = int(j[2:])*-1
+                            else:
+                                j = int(j[1:])*-1
+                        else:
+                            j=0
+                    elif j[0]=="$":
+                        if len(j[1:])>0:
+                            if j[1] != "-":
+                                if len(j[1:])!=0:
+                                    j = int(j[1:])
+                                else:
+                                    j=0
+                            else:
+                                if len(j[2:])!=0:
+                                    j = int(j[2:])*-1
+                                else:
+                                    j=0
+                        else:
+                            j=0
+                try:
+                    row[5]=row[5].upper()
+                    row[5]=row[5].strip(" ")
+                except AttributeError:
+                    errores+=1
+                try:
+                    row[7]=row[7].upper()
+                except AttributeError:
+                    errores+=1
+                try:
+                    row[21]=row[21].upper()
+                except AttributeError:
+                    errores+=1
+                try:
+                    row[8]=row[8].upper()
+                except AttributeError:
+                    errores+=1
+                datos.append((index,b,j,row[5],row[7],row[21],row[8]))
+                indice+=1
+
+            cursor.executemany("INSERT INTO maquinas VALUES(?,?,?,?,?,?,?)", datos)
+            connection.commit()
+            connection.close()
+
+    def actualizar_tabla_gastos(df4):
+        connection = sqlite3.connect('gastos.db')
+        cursor = connection.cursor()
+        cursor.execute("select count(*) from gastos")
+        values = cursor.fetchone()
+        errores = 0
+        indice = values[0]+1
+
+        if values[0]<len(df4):
+            datos = []
+            for index, row in df4[values[0]:].iterrows():
+
+
+                try:
+                    a = datetime.datetime.strptime(row[0][3:], '%m-%y')
+                    b = a.strftime('%y-%m')
+                except AttributeError:
+                    errores+=1
+                j = str(row[12]).replace(".","").strip(" ")
+                if j == "nan" or j == "":
+                    j=0
+                else:
+                    if "," in j:
+                        j = str(j[:j.find(",")])
+                    if j[0]=="-":
+                        if len(j[1:])>0:
+                            if j[1]== "$":
+                                if len(j[2:])==0:
+                                    j=0
+                                else:
+                                    j = int(j[2:])*-1
+                            else:
+                                j = int(j[1:])*-1
+                        else:
+                            j=0
+                    elif j[0]=="$":
+                        if len(j[1:])>0:
+                            if j[1] != "-":
+                                if len(j[1:])!=0:
+                                    j = int(j[1:])
+                                else:
+                                    j=0
+                            else:
+                                if len(j[2:])!=0:
+                                    j = int(j[2:])*-1
+                                else:
+                                    j=0
+                        else:
+                            j=0
+
+
+                try:
+                    row[5]=row[5].upper()
+                    row[5]=row[5].strip(" ")
+                except AttributeError:
+                    errores+=1
+                try:
+                    row[6]=row[6].upper()
+                except AttributeError:
+                    errores+=1
+                try:
+                    row[18]=row[18].upper()
+                except AttributeError:
+                    errores+=1
+                try:
+                    row[8]=row[8].upper()
+                except AttributeError:
+                    errores+=1
+
+                datos.append((index,b,j,row[5],row[6],row[18],row[8]))
+                indice+=1
+
+            cursor.executemany("INSERT INTO gastos VALUES(?,?,?,?,?,?,?)", datos)
+            connection.commit()
+            connection.close()
+
+    ahora =datetime.datetime.now()
+    actualizar_tabla_temporal(df)
+    actualizar_tabla_bodega(df2)
+    actualizar_tabla_maquinas(df3)
+    actualizar_tabla_gastos(df4)
+    actualizar_tabla_permanente(df5)
+    despues =datetime.datetime.now()
+    print(despues-ahora)
 
 def get_info(Empresa,Cultivo,Fecha,Lugar):
     connection = sqlite3.connect("temporal.db")
@@ -403,51 +854,58 @@ def aaa():
         ventana= tk.Tk()
         ventana.title("ELECCION DE PRODUCTO")
         ventana.geometry("380x300+600+50")
-        ventana.config(background = "black")
+        ventana.config(background = "#AED6F1")
         var = tk.StringVar(ventana)
         var.set("Apio 16")
         opcion= tk.OptionMenu(ventana,var,*productos)
         opcion.config(width=20)
         opcion.pack(side= "left",padx=30,pady=30)
-        el = tk.Label(ventana,text="Para seleccionar cierre la ventana",bg="red",fg="white")
-        el.pack(padx=5,pady=5,ipadx=5,ipady=5,fill=tk.X)
         color = tk.Label(ventana,bg="plum",textvariable=var,padx=5,pady=5,width=50)
         color.pack
+        boton = tk.Button(ventana,text = "aceptar",command = ventana.destroy).pack(side="right", ipadx=70)
+        #boton.place(x=30,y=50)
+
         ventana.mainloop()
+        print(var.get())
         return var.get()
 def aaa2():
         lugares = ['San Jorge', 'Castao 1', ' Castao 2 ', 'Nogales', 'Allende','Pocochay', 'Catemu', ' La Fortuna ','Llay llay', 'La Ligua', 'General', 'San Pedro','Collao', 'Casa', 'DESCUENTO', 'Olivo', 'bucalemu', 'general', 'Caja Chica', 'casa', 'Consiglieri', 'Administracin', 'Bucalemu', 'Sta Olga', 'Hijuelas', 'Romeral', 'Poncho Celeste', 'Los Caballos', 'La Pea', 'Olmu', 'Briceo', 'Administracion', 'San Felipe', 'Adm', 'adm', 'Catemu 1','Catemu 3', 'Catemu 5','Colina', 'Parrones','La Calera','casa edison','Chagre','El Roble']
         ventana= tk.Tk()
         ventana.title("ELECCION DE LUGAR")
         ventana.geometry("380x300+600+50")
-        ventana.config(background = "black")
+        ventana.config(background = "#AED6F1")
         var2 = tk.StringVar(ventana)
         var2.set("San Jorge")
         opcion= tk.OptionMenu(ventana,var2,*lugares)
         opcion.config(width=20)
         opcion.pack(side= "left",padx=30,pady=30)
-        el = tk.Label(ventana,text="Para seleccionar cierre la ventana",bg="red",fg="white",width=50)
-        el.pack(padx=5,pady=5,ipadx=5,ipady=5,fill=tk.X)
+
         color = tk.Label(ventana,bg="plum",textvariable=var2,padx=5,pady=5,width=50)
         color.pack
+        boton = tk.Button(ventana,text = "aceptar",command = ventana.destroy).pack(side="right", ipadx=70)
+        #boton.place(x=30,y=50)
         ventana.mainloop()
+        print(var2.get())
         return var2.get()
 def aaa3():
-        empresas = ['MASSAI','VALCAM','SANDRO','BRICE_O','P. HENRIQUEZ','COLLAO','SEGUNDO CALIZARIO','JUAN GONZALEZ','ARANCIBIA','ROSARIO FERNANDEZ','VASQUEZ','MARIA CORTEZ','DAVID VILLARROEL','VIZA','ALEJANDRO CONTRERAS','CSILVA','NELSON ZAMORA','CARLOS NAVARRO','NAHUEN','GONZALEZ','RICARDO VASQUEZ','LUIS RODRIGUEZ','VENTURA SEPULVEDA','RODRIGO MARTINEZ','ARANGUE','ORLANDO ARAYA','FELIPE BUSTAMANTE','AGRO LIDER','VENTURA','ALMONTE','JOSE HURTADO','HURTADO','ELIAS JAMET','JAMETT','MARCO ARANGUE','CALISARIO','VIAL','CALISARIO 400 VISL 341','MARTINEZ','MARZAN' ]
+        empresas = ['VALCAM','MASSAI','SANDRO','BRICE_O','P. HENRIQUEZ','COLLAO','SEGUNDO CALIZARIO','JUAN GONZALEZ','ARANCIBIA','ROSARIO FERNANDEZ','VASQUEZ','MARIA CORTEZ','DAVID VILLARROEL','VIZA','ALEJANDRO CONTRERAS','CSILVA','NELSON ZAMORA','CARLOS NAVARRO','NAHUEN','GONZALEZ','RICARDO VASQUEZ','LUIS RODRIGUEZ','VENTURA SEPULVEDA','RODRIGO MARTINEZ','ARANGUE','ORLANDO ARAYA','FELIPE BUSTAMANTE','AGRO LIDER','VENTURA','ALMONTE','JOSE HURTADO','HURTADO','ELIAS JAMET','JAMETT','MARCO ARANGUE','CALISARIO','VIAL','CALISARIO 400 VISL 341','MARTINEZ','MARZAN' ]
         ventana= tk.Tk()
         ventana.title("ELECCION DE EMPRESA")
         ventana.geometry("380x300+600+50")
-        ventana.config(background = "black")
+        ventana.config(background = "#AED6F1")
         var2 = tk.StringVar(ventana)
         var2.set("VALCAM")
         opcion= tk.OptionMenu(ventana,var2,*empresas)
         opcion.config(width=20)
         opcion.pack(side= "left",padx=30,pady=30)
-        el = tk.Label(ventana,text="Para seleccionar cierre la ventana",bg="red",fg="white",width=50)
-        el.pack(padx=5,pady=5,ipadx=5,ipady=5,fill=tk.X)
+
         color = tk.Label(ventana,bg="plum",textvariable=var2,padx=5,pady=5,width=50)
         color.pack
+        boton = tk.Button(ventana,text = "aceptar",command = ventana.destroy).pack(side="right", ipadx=70)
+        #boton.place(x=30,y=50)
+
         ventana.mainloop()
+        print(var2.get())
         return var2.get()
 
 def GV():
@@ -531,6 +989,5 @@ writer = pd.ExcelWriter("Resumen.xlsx",engine='xlsxwriter')
 for sheet_name in diccionario.keys():
     diccionario[sheet_name].to_excel(writer,sheet_name=sheet_name,index = True,header = True,startrow= 1)
 writer.save()
-
 #final2.to_csv("resumen2.csv",sep=";")
 #final.to_csv("resumen.csv",sep=";",)

@@ -1,0 +1,4 @@
+cd Desktop/
+cd Proyecto_verano/
+python3 codigo.py
+open Resumen.xlsx
